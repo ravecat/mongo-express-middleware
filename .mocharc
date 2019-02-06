@@ -1,0 +1,2 @@
+--recursive ./{,!(node_modules)/**/}*.test.js
+--require babel-core/register
