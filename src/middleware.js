@@ -1,9 +1,9 @@
-import { Router } from 'express';
+import express from 'express';
 import method from './method';
 import { callback } from './callback';
 
 export default (model, map, ...rest) => {
-  const router = Router({
+  const router = express.Router({
     mergeParams: true,
   });
   
