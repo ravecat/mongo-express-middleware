@@ -2,7 +2,8 @@ const fs = require('fs');
 const path = `.env.${process.env.NODE_ENV}`;
 
 if (!fs.existsSync(path)) {
-	console.warn(`\nFile ${path} doesn't exists or NODE_ENV not setted, app uses default environment variables\n`);
+	/* eslint-disable-next-line no-console */
+	console.log(`\nFile ${path} doesn't exists or NODE_ENV not setted, app uses default environment variables\n`);
 }
 
 require('dotenv').config({ path: `${path || 'dev'}` });

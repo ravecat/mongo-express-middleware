@@ -17,7 +17,8 @@ describe('API/api/elements', function () {
 
     mongoose.connection.on('error', console.error.bind(console, 'connection error'));
     mongoose.connection.once('open', function() {
-      console.warn('\nConnection to mongo successfully established\n');
+      /* eslint-disable-next-line no-console */
+      console.log('\nConnection to mongo successfully established\n');
     });
 
     done();

@@ -1,11 +1,11 @@
-import { Router } from 'express';
+import express from 'express';
 import middleware from './middleware';
 
 const mapList = { create:'post', read:'get' };
 const mapEntity = { readEntity:'get', update:'put', delete:'delete' };
 
 export const mongoMiddleware = ({ mergeParams = false, caseSensitive = false, strict = false, model, ...rest }) => {
-  const router = Router({
+  const router = express.Router({
     mergeParams,
     caseSensitive,
     strict
