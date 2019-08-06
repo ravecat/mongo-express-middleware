@@ -33,16 +33,23 @@
     "test:app": "NODE_ENV=test mocha --opts .mocharc",
     "test:docker": "docker-compose -f docker-compose.test.yml up -d",
     "test": "yarn test:docker && yarn test:app",
-    "test:watch": "yarn test --watch"
+    "test:watch": "yarn test --watch",
+    "release:debug": "semantic-release --debug"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
     "@babel/plugin-transform-spread": "^7.2.2",
     "@babel/preset-env": "^7.3.1",
     "@babel/register": "^7.0.0",
+    "@commitlint/cli": "^8.0.0",
+    "@commitlint/config-angular": "^8.0.0",
+    "@semantic-release/changelog": "^3.0.4",
+    "@semantic-release/git": "^7.0.16",
+    "@semantic-release/gitlab": "^3.1.7",
     "babel-eslint": "^10.0.1",
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
+    "cz-customizable": "^6.2.0",
     "dotenv": "^6.2.0",
     "eslint": "^5.12.1",
     "express": "^4.16.4",
@@ -54,11 +61,13 @@
     "rimraf": "^2.6.3",
     "rollup": "^1.1.2",
     "rollup-plugin-babel": "^4.3.2",
-    "rollup-plugin-uglify": "^6.0.2"
+    "rollup-plugin-uglify": "^6.0.2",
+    "semantic-release": "^15.13.18"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {
@@ -71,5 +80,13 @@
   "peerDependencies": {
     "express": "^4.16.4",
     "mongoose": "^5.4.10"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "./commitizen.config.js"
+    }
   }
 }
