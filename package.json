@@ -2,7 +2,7 @@
   "name": "mongo-express-middleware",
   "description": "Mongo CRUD middleware for express",
   "version": "1.1.0",
-  "homepage": "https://github.com/ravecat/mongo-express-middleware",
+  "homepage": "https://gitlab.com/ravecat/mongo-express-middleware",
   "keywords": [
     "express",
     "mongo",
@@ -16,10 +16,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ravecat/mongo-express-middleware"
+    "url": "git+https://gitlab.com/ravecat/mongo-express-middleware"
   },
   "bugs": {
-    "url": "https://github.com/ravecat/mongo-express-middleware/issues"
+    "url": "https://gitlab.com/ravecat/mongo-express-middleware/issues"
   },
   "main": "dist/index.js",
   "files": [
@@ -28,12 +28,10 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "rollup -c",
+    "test": "docker-compose up --exit-code-from app",
+    "release:debug": "semantic-release --debug",
     "lint": "eslint 'src/**/*.js'",
-    "test:app": "NODE_ENV=test mocha --opts .mocharc",
-    "test:docker": "docker-compose -f docker-compose.test.yml up -d",
-    "test": "yarn test:docker && yarn test:app",
-    "prettier": "prettier --check '**/*.{md,yml,json}'",
-    "release:debug": "semantic-release --debug"
+    "prettier": "prettier --check *"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
@@ -68,14 +66,13 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
+      "pre-commit": "lint-staged && yarn test",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {
     "*.js": [
       "eslint --fix",
-      "yarn test",
       "git add"
     ],
     "*.{md,yml,json}": [

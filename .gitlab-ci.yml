@@ -1,0 +1,63 @@
+image: docker:stable
+
+cache:
+  paths:
+    - node_modules/
+
+stages:
+  - preparation
+  - test
+  - release
+
+build_deps:
+  image: node:10.13-alpine
+  stage: preparation
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 1h
+  tags:
+    - docker
+  dependencies: []
+  script:
+    - yarn
+
+test_api:
+  image: node:10.13-alpine
+  stage: test
+  tags:
+    - docker
+  dependencies: []
+  script:
+    - apk add py-pip
+    - apk add python-dev libffi-dev openssl-dev gcc libc-dev make
+    - pip install --upgrade pip
+    - pip install docker-compose
+    - yarn test
+
+test_lint:
+  image: node:10.13-alpine
+  stage: test
+  tags:
+    - docker
+  dependencies:
+    - build_deps
+  script:
+    - yarn lint
+    - yarn prettier
+
+release:
+  image: node:10.13-alpine
+  stage: release
+  tags:
+    - docker
+  only:
+    - master
+  dependencies:
+    - build_deps
+  script:
+    - apk add --no-cache git
+    - GITLAB_TOKEN=$GITLAB_TOKEN yarn semantic-release
+    - yarn build
+    - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+    - npm publish

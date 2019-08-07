@@ -1,6 +1,7 @@
 import { mongoMiddleware } from '../src';
 import { Elements } from './model';
 
-export default () => mongoMiddleware({
-  model: Elements
-});
+export default () =>
+  mongoMiddleware({
+    model: Elements,
+  });

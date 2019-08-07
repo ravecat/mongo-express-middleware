@@ -5,13 +5,11 @@ export default {
   input: './src/index.js',
   plugins: [
     babel({
-      exclude: 'node_modules/**'
+      exclude: 'node_modules/**',
     }),
-    uglify()
+    uglify(),
   ],
-  external: [
-    'express'
-  ],
+  external: ['express'],
   output: {
     file: 'dist/index.js',
     format: 'cjs',

@@ -1,0 +1,25 @@
+version: '3.5'
+
+services:
+  mongo:
+    container_name: mongo_mongo_express_middleware
+    image: mongo:latest
+    networks:
+      - mongo_express_middleware
+
+  app:
+    container_name: app_mongo_express_middleware
+    build:
+      context: .
+    environment:
+      - NODE_ENV=test
+      - DB_HOST=mongo
+    depends_on:
+      - mongo
+    networks:
+      - mongo_express_middleware
+
+networks:
+  mongo_express_middleware:
+    name: mongo_express_middleware
+    driver: bridge
