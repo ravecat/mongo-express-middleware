@@ -6,14 +6,14 @@ export default (model, map, ...rest) => {
   const router = express.Router({
     mergeParams: true,
   });
-  
+
   Object.keys(map).forEach(key => {
     const cb = typeof rest[key] === 'function' ? rest[key] : callback;
-    
+
     router[map[key]]('/', (req, res, next) => {
       try {
         method[key]({ req, res, next, cb, model, key });
-      } catch(err) {
+      } catch (err) {
         next(err);
       }
     });

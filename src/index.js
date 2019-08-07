@@ -1,20 +1,26 @@
 import express from 'express';
 import middleware from './middleware';
 
-const mapList = { create:'post', read:'get' };
-const mapEntity = { readEntity:'get', update:'put', delete:'delete' };
+const mapList = { create: 'post', read: 'get' };
+const mapEntity = { readEntity: 'get', update: 'put', delete: 'delete' };
 
-export const mongoMiddleware = ({ mergeParams = false, caseSensitive = false, strict = false, model, ...rest }) => {
+export const mongoMiddleware = ({
+  mergeParams = false,
+  caseSensitive = false,
+  strict = false,
+  model,
+  ...rest
+}) => {
   const router = express.Router({
     mergeParams,
     caseSensitive,
-    strict
+    strict,
   });
 
   if (rest.middleware) router.use(rest.middleware);
 
   router.use('/', middleware(model, mapList, ...rest));
   router.use('/:id([a-zA-Z0-9]+)', middleware(model, mapEntity, ...rest));
-  
+
   return router;
 };

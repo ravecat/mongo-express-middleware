@@ -15,6 +15,7 @@ $ npm install mongo-express-middleware
 ```
 
 or [`yarn add` command](https://yarnpkg.com/lang/en/docs/cli/add/#toc-adding-dependencies):
+
 ```bash
 $ yarn add mongo-express-middleware
 ```
@@ -22,6 +23,7 @@ $ yarn add mongo-express-middleware
 ## Using
 
 `app.js`
+
 ```JS
 import express from 'express';
 import { mongoMiddleware } from 'mongo-express-middleware';
@@ -34,25 +36,26 @@ app.use('/api/path', mongoMiddleware(options: Object));
 Current midlleware works with list path `<host>/api/path/` and entity path `<host>/api/path/:id([a-zA-Z0-9]+)`
 
 Middleware options include multiple keys
+
 ```JS
 {
-  /* 
+  /*
     Model field set mongoose model.
     Required field.
   */
   model: Object,
-  /* 
+  /*
     Fields specify the behavior of the middleware according express docs
     http://expressjs.com/en/api.html#express.router
   */
   mergeParams: boolean,
   strict: boolean,
   caseSensitive: boolean,
-  /* 
+  /*
     Callback for handle returned data.
 
     * create, read methods work with entity list
-    * readEntity, put, delete methods work with single entity 
+    * readEntity, put, delete methods work with single entity
 
     Default callback
 
@@ -70,10 +73,10 @@ Middleware options include multiple keys
 
 ## Example
 
-  [Application](./app/app.js)
+[Application](./app/app.js)
 
-  Run [tests](./app/__test__/app.test.js) using the command `yarn test`
+Run [tests](./app/__test__/app.test.js) using the command `yarn test`
 
 ## License
 
-  [MIT](LICENSE)
+[MIT](LICENSE)

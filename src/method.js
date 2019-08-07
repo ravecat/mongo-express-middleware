@@ -2,7 +2,7 @@ export default {
   read: function({ req, res, next, cb, model, key }) {
     return model.find(function(err, data) {
       if (err) return res.status(500).send(err);
-      
+
       res.data = data;
 
       cb(req, res, next);
@@ -11,7 +11,7 @@ export default {
   create: function({ req, res, next, cb, model, key }) {
     return model.create(req.body, function(err, data) {
       if (err) return res.status(500).send(err);
-      
+
       res.data = data;
 
       cb(req, res, next);
@@ -20,14 +20,17 @@ export default {
   readEntity: function({ req, res, next, cb, model, key }) {
     return model.findOne({ _id: req.params.id }, function(err, data) {
       if (err) return res.status(500).send(err);
-      
+
       res.data = data;
 
       cb(req, res, next);
     });
   },
   update: function({ req, res, next, cb, model, key }) {
-    return model.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function(err, data) {
+    return model.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function(
+      err,
+      data,
+    ) {
       if (err) return res.status(500).send(err);
 
       res.data = data;
@@ -40,10 +43,10 @@ export default {
       if (err) return res.status(500).send(err);
 
       res.data = {
-        id: data._id
+        id: data._id,
       };
 
       cb(req, res, next);
     });
-  }
+  },
 };
