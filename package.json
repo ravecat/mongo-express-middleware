@@ -28,7 +28,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "rollup -c",
-    "test": "docker-compose up --exit-code-from app",
+    "test": "docker-compose up --build --exit-code-from app",
     "release:debug": "semantic-release --debug",
     "lint": "eslint 'src/**/*.js'",
     "prettier": "prettier --check *"

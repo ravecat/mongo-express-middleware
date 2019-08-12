@@ -9,7 +9,7 @@ import element from './data.json';
 chai.use(chaiHttp);
 chai.should();
 
-describe('API/api/elements', function() {
+describe('API/elements', function() {
   before(function(done) {
     const { databaseName, databaseHost, databasePort } = config;
 
@@ -32,10 +32,10 @@ describe('API/api/elements', function() {
     });
   });
 
-  it('GET/api/elements Get element list', function(done) {
+  it('GET/elements Get element list', function(done) {
     chai
       .request(app)
-      .get('/api/elements')
+      .get('/elements')
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a('array');
@@ -44,10 +44,21 @@ describe('API/api/elements', function() {
       });
   });
 
-  it('POST/api/elements Create element successfully', done => {
+  it('GET/elements Get element list (rewrited)', function(done) {
     chai
       .request(app)
-      .post('/api/elements')
+      .get('/custom')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.have.property('customData');
+        done();
+      });
+  });
+
+  it('POST/elements Create element', done => {
+    chai
+      .request(app)
+      .post('/elements')
       .send(element)
       .end((err, res) => {
         res.should.have.status(200);
@@ -58,11 +69,23 @@ describe('API/api/elements', function() {
       });
   });
 
-  it('GET/api/elements/:id Get element by atomic number', done => {
+  it('POST/elements Create element (rewrited)', done => {
+    chai
+      .request(app)
+      .post('/custom')
+      .send(element)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.have.property('customData');
+        done();
+      });
+  });
+
+  it('GET/elements/:id Get element by atomic number', done => {
     Elements.create(element, (err, data) => {
       chai
         .request(app)
-        .get(`/api/elements/${data._id}`)
+        .get(`/elements/${data._id}`)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
@@ -74,11 +97,24 @@ describe('API/api/elements', function() {
     });
   });
 
-  it('PUT/api/elements/:id Update element', done => {
+  it('GET/elements/:id Get element by atomic number (rewrited)', done => {
     Elements.create(element, (err, data) => {
       chai
         .request(app)
-        .put(`/api/elements/${data._id}`)
+        .get(`/custom/${data._id}`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.have.property('customData');
+          done();
+        });
+    });
+  });
+
+  it('PUT/elements/:id Update element', done => {
+    Elements.create(element, (err, data) => {
+      chai
+        .request(app)
+        .put(`/elements/${data._id}`)
         .send({ ...data._doc, name: 'Updated' })
         .end((err, res) => {
           res.should.have.status(200);
@@ -91,15 +127,42 @@ describe('API/api/elements', function() {
     });
   });
 
-  it('DELETE/api/elements/:id Delete element', done => {
+  it('PUT/elements/:id Update element (rewrited)', done => {
     Elements.create(element, (err, data) => {
       chai
         .request(app)
-        .delete(`/api/elements/${data._id}`)
+        .put(`/custom/${data._id}`)
+        .send({ ...data._doc, name: 'Updated' })
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.have.property('customData');
+          done();
+        });
+    });
+  });
+
+  it('DELETE/elements/:id Delete element', done => {
+    Elements.create(element, (err, data) => {
+      chai
+        .request(app)
+        .delete(`/elements/${data._id}`)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
           res.body.should.have.property('id').eql(`${data._id}`);
+          done();
+        });
+    });
+  });
+
+  it('DELETE/elements/:id Delete element (rewrited)', done => {
+    Elements.create(element, (err, data) => {
+      chai
+        .request(app)
+        .delete(`/custom/${data._id}`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.have.property('customData');
           done();
         });
     });

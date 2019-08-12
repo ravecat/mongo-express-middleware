@@ -2,7 +2,7 @@ import express from 'express';
 import method from './method';
 import { callback } from './callback';
 
-export default (model, map, ...rest) => {
+export default ({ model, map, ...rest }) => {
   const router = express.Router({
     mergeParams: true,
   });

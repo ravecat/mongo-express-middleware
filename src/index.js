@@ -19,8 +19,8 @@ export const mongoMiddleware = ({
 
   if (rest.middleware) router.use(rest.middleware);
 
-  router.use('/', middleware(model, mapList, ...rest));
-  router.use('/:id([a-zA-Z0-9]+)', middleware(model, mapEntity, ...rest));
+  router.use('/', middleware({ model, map: mapList, ...rest }));
+  router.use('/:id([a-zA-Z0-9]+)', middleware({ model, map: mapEntity, ...rest }));
 
   return router;
 };
