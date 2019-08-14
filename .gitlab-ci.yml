@@ -57,7 +57,6 @@ release:
     - build_deps
   script:
     - apk add --no-cache git
-    - GITLAB_TOKEN=$GITLAB_TOKEN yarn semantic-release
     - yarn build
     - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-    - npm publish
+    - GITLAB_TOKEN=$GITLAB_TOKEN yarn semantic-release
