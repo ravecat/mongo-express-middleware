@@ -1,7 +1,7 @@
 {
   "name": "mongo-express-middleware",
   "description": "Mongo CRUD middleware for express",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "homepage": "https://gitlab.com/ravecat/mongo-express-middleware",
   "keywords": [
     "express",
