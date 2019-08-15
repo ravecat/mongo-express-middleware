@@ -19,40 +19,10 @@ describe('API/elements', function() {
 
     mongoose.connection.on('error', console.error.bind(console, 'connection error'));
     mongoose.connection.once('open', function() {
-      /* eslint-disable-next-line no-console */
-      console.log('\nConnection to mongo successfully established\n');
+      console.warn('\nConnection to mongo successfully established\n');
     });
 
     done();
-  });
-
-  beforeEach(function(done) {
-    Elements.deleteMany({}, err => {
-      done();
-    });
-  });
-
-  it('GET/elements Get element list', function(done) {
-    chai
-      .request(app)
-      .get('/elements')
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.be.a('array');
-        res.body.length.should.be.eql(0);
-        done();
-      });
-  });
-
-  it('GET/elements Get element list (rewrited)', function(done) {
-    chai
-      .request(app)
-      .get('/custom')
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.have.property('customData');
-        done();
-      });
   });
 
   it('POST/elements Create element', done => {
@@ -74,6 +44,41 @@ describe('API/elements', function() {
       .request(app)
       .post('/custom')
       .send(element)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.have.property('customData');
+        done();
+      });
+  });
+
+  it('GET/elements Get element list', function(done) {
+    chai
+      .request(app)
+      .get('/elements')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a('array');
+        res.body.length.should.be.eql(2);
+        done();
+      });
+  });
+
+  it('GET/elements Get element list with params', function(done) {
+    chai
+      .request(app)
+      .get('/elements?atomic_number=1')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a('array');
+        res.body.length.should.be.eql(2);
+        done();
+      });
+  });
+
+  it('GET/elements Get element list (rewrited)', function(done) {
+    chai
+      .request(app)
+      .get('/custom')
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.have.property('customData');

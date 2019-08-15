@@ -3,4 +3,5 @@
 /coverage
 /mock
 
+CHANGELOG.md
 *.log*

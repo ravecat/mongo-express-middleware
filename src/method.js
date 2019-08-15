@@ -1,6 +1,8 @@
 export default {
   read: function({ req, res, next, cb, model, key }) {
-    return model.find(function(err, data) {
+    const { query: filter } = req;
+
+    return model.find(filter, function(err, data) {
       if (err) return res.status(500).send(err);
 
       res.data = data;
@@ -18,7 +20,7 @@ export default {
     });
   },
   readEntity: function({ req, res, next, cb, model, key }) {
-    return model.findOne({ _id: req.params.id }, function(err, data) {
+    return model.findById(req.params.id, function(err, data) {
       if (err) return res.status(500).send(err);
 
       res.data = data;
