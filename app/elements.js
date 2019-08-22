@@ -1,7 +1,17 @@
 import { mongoMiddleware } from '../src';
 import { Elements } from './model';
 
-export default () =>
-  mongoMiddleware({
-    model: Elements,
-  });
+import { Router } from 'express';
+
+export default function elements() {
+  const router = Router();
+
+  router.use(
+    '/',
+    mongoMiddleware({
+      model: Elements,
+    }),
+  );
+
+  return router;
+}

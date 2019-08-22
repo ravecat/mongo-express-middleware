@@ -1,15 +1,16 @@
+import fs from 'fs';
 import mongoose from 'mongoose';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import config from '../config';
 import app from '../app';
 import { Elements } from '../model';
-import element from './data.json';
 
 chai.use(chaiHttp);
 chai.should();
 
 describe('API/elements', function() {
+  var element;
   before(function(done) {
     const { databaseName, databaseHost, databasePort } = config;
 
@@ -19,10 +20,19 @@ describe('API/elements', function() {
 
     mongoose.connection.on('error', console.error.bind(console, 'connection error'));
     mongoose.connection.once('open', function() {
+      element = JSON.parse(fs.readFileSync(`${__dirname}/data.json`));
       console.warn('\nConnection to mongo successfully established\n');
-    });
 
-    done();
+      done();
+    });
+  });
+
+  beforeEach(function(done) {
+    Elements.deleteMany({}, err => {
+      if (err) console.warn(err);
+
+      done();
+    });
   });
 
   it('POST/elements Create element', done => {
@@ -35,6 +45,8 @@ describe('API/elements', function() {
         res.body.should.be.a('object');
         res.body.should.have.property('name');
         res.body.should.have.property('symbol');
+        res.body.should.have.property('atomicWeight');
+        res.body.should.have.property('atomicNumber');
         done();
       });
   });
@@ -52,27 +64,39 @@ describe('API/elements', function() {
   });
 
   it('GET/elements Get element list', function(done) {
-    chai
-      .request(app)
-      .get('/elements')
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.be.a('array');
-        res.body.length.should.be.eql(2);
-        done();
-      });
+    Elements.create(element, () => {
+      chai
+        .request(app)
+        .get('/elements')
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('array');
+          res.body.length.should.be.eql(1);
+          res.body[0].should.have.property('name');
+          res.body[0].should.have.property('symbol');
+          res.body[0].should.have.property('atomicNumber').eql(element.atomicNumber);
+          res.body[0].should.have.property('atomicWeight').eql(element.atomicWeight);
+          done();
+        });
+    });
   });
 
   it('GET/elements Get element list with params', function(done) {
-    chai
-      .request(app)
-      .get('/elements?atomic_number=1')
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.be.a('array');
-        res.body.length.should.be.eql(2);
-        done();
-      });
+    Elements.create(element, () => {
+      chai
+        .request(app)
+        .get(`/elements?atomicNumber=${element.atomicNumber}`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('array');
+          res.body.length.should.be.eql(1);
+          res.body[0].should.have.property('name');
+          res.body[0].should.have.property('symbol');
+          res.body[0].should.have.property('atomicNumber').eql(element.atomicNumber);
+          res.body[0].should.have.property('atomicWeight').eql(element.atomicWeight);
+          done();
+        });
+    });
   });
 
   it('GET/elements Get element list (rewrited)', function(done) {
@@ -86,7 +110,7 @@ describe('API/elements', function() {
       });
   });
 
-  it('GET/elements/:id Get element by atomic number', done => {
+  it('GET/elements/:id Get element by id', done => {
     Elements.create(element, (err, data) => {
       chai
         .request(app)
@@ -96,13 +120,14 @@ describe('API/elements', function() {
           res.body.should.be.a('object');
           res.body.should.have.property('name');
           res.body.should.have.property('symbol');
-          res.body.should.have.property('atomic_number').eql(element.atomic_number);
+          res.body.should.have.property('atomicNumber').eql(element.atomicNumber);
+          res.body.should.have.property('atomicWeight').eql(element.atomicWeight);
           done();
         });
     });
   });
 
-  it('GET/elements/:id Get element by atomic number (rewrited)', done => {
+  it('GET/elements/:id Get element by id (rewrited)', done => {
     Elements.create(element, (err, data) => {
       chai
         .request(app)

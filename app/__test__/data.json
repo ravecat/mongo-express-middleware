@@ -1,6 +1,6 @@
 {
   "name": "Hydrogen",
   "symbol": "H",
-  "atomic_weigth": 1,
-  "atomic_number": 1
+  "atomicWeight": "1",
+  "atomicNumber": "1"
 }
