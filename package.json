@@ -62,7 +62,7 @@
     "rollup": "^1.1.2",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-uglify": "^6.0.2",
-    "semantic-release": "^15.13.18"
+    "semantic-release": "^17.2.3"
   },
   "husky": {
     "hooks": {
